@@ -7,52 +7,43 @@ const navigationButtons = document.querySelector(
   "[data-js=navigation-buttons]"
 );
 
-const allButton = createButton({ name: "All", onClick: fetchAllPeople });
-const issButton = createButton({ name: "ISS", onClick: fetchISSPeople });
+const allButton = createButton({ name: "All", onClick: fetchPeople });
+const issButton = createButton({ name: "ISS", onClick: fetchPeople });
 const tiangongButton = createButton({
   name: "Tiangong",
-  onClick: fetchTiangongPeople,
+  onClick: fetchPeople,
 });
 navigationButtons.append(allButton, issButton, tiangongButton);
 
-let check = "";
+let filterQuery = " ";
+let initialFetch = true;
 
 fetchNumberOfPeopleInSpace();
 
 /*------Fetch method using static data--------*/
 
-/*function fetchNumberOfPeopleInSpace() {
+function fetchNumberOfPeopleInSpace() {
   peopleList.innerHTML = "";
   spanElement.textContent = people.length;
-  if (check === "All") {
-    people.forEach((person) => {
-      peopleList.append(createCard(person));
-    });
-  } else if (check === "ISS") {
-    people
-      .filter((person) => person.craft === "ISS")
-      .forEach((person) => {
-        peopleList.append(createCard(person));
-      });
-  } else if (check === "Tiangong") {
-    people
-      .filter((person) => person.craft === "Tiangong")
-      .forEach((person) => {
-        peopleList.append(createCard(person));
-      });
+
+  if (initialFetch) {
+    peopleList.innerHTML = "Click on the respective button to view the data.";
   } else {
-    peopleList.innerHTML = "Click to view the data";
-    peopleList.style.color = "white";
-  }
-  if (!peopleList.hasChildNodes()) {
-    peopleList.innerHTML = "No data Found";
+    people
+      .filter((person) => person.craft.includes(filterQuery))
+      .forEach((person) => {
+        peopleList.append(createCard(person));
+      });
+
+    if (!peopleList.hasChildNodes()) {
+      peopleList.innerHTML = "No data Found";
+    }
   }
 }
-*/
 
 /*------Fetch method using URL--------*/
 
-async function fetchNumberOfPeopleInSpace() {
+/* async function fetchNumberOfPeopleInSpace() {
   peopleList.innerHTML = "";
 
   try {
@@ -60,48 +51,28 @@ async function fetchNumberOfPeopleInSpace() {
     const data = await response.json();
     spanElement.textContent = data.number;
     const people = data.people;
-
-    if (check === "All") {
-      people.forEach((person) => {
-        peopleList.append(createCard(person));
-      });
-    } else if (check === "ISS") {
-      people
-        .filter((person) => person.craft === "ISS")
-        .forEach((person) => {
-          peopleList.append(createCard(person));
-        });
-    } else if (check === "Tiangong") {
-      people
-        .filter((person) => person.craft === "Tiangong")
-        .forEach((person) => {
-          peopleList.append(createCard(person));
-        });
+    if (initialFetch) {
+      peopleList.innerHTML = "Click on the respective button to view the data.";
     } else {
-      peopleList.innerHTML = "Click to view the data";
-      peopleList.style.color = "white";
-    }
+      people
+        .filter((person) => person.craft.includes(filterQuery))
+        .forEach((person) => {
+          peopleList.append(createCard(person));
+        });
 
-    if (!peopleList.hasChildNodes()) {
-      peopleList.innerHTML = "No data Found";
+      if (!peopleList.hasChildNodes()) {
+        peopleList.innerHTML = "No data Found";
+      }
     }
   } catch (error) {
     console.log(error);
   }
-}
+} */
 
-function fetchAllPeople() {
-  check = event.target.textContent.trim();
-  fetchNumberOfPeopleInSpace();
-}
-
-function fetchISSPeople() {
-  check = event.target.textContent.trim();
-  fetchNumberOfPeopleInSpace();
-}
-
-function fetchTiangongPeople() {
-  check = event.target.textContent.trim();
+function fetchPeople(e) {
+  initialFetch = false;
+  const clickButton = e.target.innerHTML.trim();
+  filterQuery = clickButton.includes("All") ? "" : clickButton;
   fetchNumberOfPeopleInSpace();
 }
 

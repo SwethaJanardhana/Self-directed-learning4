@@ -4,6 +4,7 @@
 
 body {
   background-color: rgb(106, 117, 172);
+  text-align: center;
 }
 h1 {
   color: wheat;
@@ -11,4 +12,36 @@ h1 {
 
 .fontColor {
   color: rgba(239, 230, 230, 0.862);
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+  margin: 1rem 25rem;
+  padding: 2rem;
+  border: 3px solid rgb(59, 59, 164);
+  border-radius: 1rem;
+}
+
+.button-class {
+  padding: 0.5rem;
+  font-size: medium;
+  border-radius: 0.5rem;
+}
+
+.button__active {
+  background-color: brown;
+  color: white;
+}
+
+.button__active:disabled {
+  cursor: no-drop;
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }

@@ -7,8 +7,14 @@ const navigationButtons = document.querySelector(
   "[data-js=navigation-buttons]"
 );
 
-const allButton = createButton({ name: "All", onClick: fetchPeople });
-const issButton = createButton({ name: "ISS", onClick: fetchPeople });
+const allButton = createButton({
+  name: "All",
+  onClick: fetchPeople,
+});
+const issButton = createButton({
+  name: "ISS",
+  onClick: fetchPeople,
+});
 const tiangongButton = createButton({
   name: "Tiangong",
   onClick: fetchPeople,
@@ -22,7 +28,7 @@ fetchNumberOfPeopleInSpace();
 
 /*------Fetch method using static data--------*/
 
-function fetchNumberOfPeopleInSpace() {
+/* function fetchNumberOfPeopleInSpace() {
   peopleList.innerHTML = "";
   spanElement.textContent = people.length;
 
@@ -39,11 +45,11 @@ function fetchNumberOfPeopleInSpace() {
       peopleList.innerHTML = "No data Found";
     }
   }
-}
+} */
 
 /*------Fetch method using URL--------*/
 
-/* async function fetchNumberOfPeopleInSpace() {
+async function fetchNumberOfPeopleInSpace() {
   peopleList.innerHTML = "";
 
   try {
@@ -67,11 +73,15 @@ function fetchNumberOfPeopleInSpace() {
   } catch (error) {
     console.log(error);
   }
-} */
+}
 
 function fetchPeople(e) {
+  console.log(navigationButtons.children);
   initialFetch = false;
-  const clickButton = e.target.innerHTML.trim();
+  e.currentTarget.dataset.isActive = true;
+  const clickButton = e.currentTarget.innerHTML.trim();
+  handleClickHighlight();
+
   filterQuery = clickButton.includes("All") ? "" : clickButton;
   fetchNumberOfPeopleInSpace();
 }
@@ -81,4 +91,22 @@ function createCard(props) {
   createLi.classList.add("fontColor");
   createLi.textContent = props.name;
   return createLi;
+}
+// highlight only the clicked button
+
+function handleClickHighlight() {
+  Array.from(navigationButtons.children).forEach((button) => {
+    console.log("active button : ", button.dataset.isActive);
+    if (
+      button.dataset.isActive === "true" &&
+      !button.classList.contains("button__active")
+    ) {
+      button.classList.add("button__active");
+      button.disabled = true;
+    } else {
+      button.dataset.isActive = "false";
+      button.disabled = false;
+      button.classList.remove("button__active");
+    }
+  });
 }
